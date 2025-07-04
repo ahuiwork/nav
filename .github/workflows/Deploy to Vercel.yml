@@ -1,0 +1,39 @@
+name: Build and Deploy to Vercel
+
+on:
+  push:
+    branches:
+      - master
+      - main
+
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 22.x
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Install dependencies
+        run: |
+          pnpm install
+
+      - name: Build
+        run: |
+          npm run build
+
+      - name: Deploy to Vercel
+        uses: amondnet/vercel-action@v20
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}  # Vercel API token
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}  # 项目 ID
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}  # 组织 ID
