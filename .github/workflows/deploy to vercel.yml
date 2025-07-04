@@ -4,32 +4,43 @@ on:
   push:
     branches:
       - main  # 或者 master
+  workflow_dispatch:  # 允许手动触发
 
 jobs:
   build_and_deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+    runs-on: ubuntu-latest  # 选择 Ubuntu 环境运行
 
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4  # Checkout 仓库代码
+
+      # 设置 Node.js 版本，确保使用合适的 Node.js 版本
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '20.x'  # 设置为支持的 Node.js 版本（18.x 或 20.x）
+          node-version: '18.x'  # 使用支持的 Node.js 版本（18.x 或 20.x）
 
+      # 安装 pnpm
       - name: Install pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: '6'
+          version: '6'  # 安装 pnpm 6.x
 
+      # 清除现有的 pnpm 缓存，以避免缓存导致的问题
+      - name: Clear pnpm cache
+        run: pnpm store prune
+
+      # 安装依赖
       - name: Install dependencies
         run: |
-          pnpm install
+          pnpm install --frozen-lockfile  # 使用锁文件来确保依赖的一致性
 
-      - name: Build
+      # 构建项目
+      - name: Build the project
         run: |
-          npm run build
+          npm run build  # 或者根据项目需要修改为其他构建命令
 
-      - name: Deploy to Vercel (GitHub Actions Integration)
+      # 部署到 Vercel
+      - name: Deploy to Vercel
         run: |
-          vercel --prod
+          vercel --prod  # 执行部署命令，确保已正确配置 Vercel CLI
