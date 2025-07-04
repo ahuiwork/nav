@@ -3,8 +3,7 @@ name: Build and Deploy to Vercel
 on:
   push:
     branches:
-      - master
-      - main
+      - main  # 或者 master
 
 jobs:
   build_and_deploy:
@@ -18,11 +17,6 @@ jobs:
         with:
           node-version: 22.x
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 10
-
       - name: Install dependencies
         run: |
           pnpm install
@@ -31,9 +25,6 @@ jobs:
         run: |
           npm run build
 
-      - name: Deploy to Vercel
-        uses: amondnet/vercel-action@v20
-        with:
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}  # Vercel API token
-          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}  # 项目 ID
-          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}  # 组织 ID
+      - name: Deploy to Vercel (GitHub Actions Integration)
+        run: |
+          vercel --prod --token ${{ secrets.VERCEL_TOKEN }}  # 如果你有 Vercel Token 也可以设置它，但现在不需要
