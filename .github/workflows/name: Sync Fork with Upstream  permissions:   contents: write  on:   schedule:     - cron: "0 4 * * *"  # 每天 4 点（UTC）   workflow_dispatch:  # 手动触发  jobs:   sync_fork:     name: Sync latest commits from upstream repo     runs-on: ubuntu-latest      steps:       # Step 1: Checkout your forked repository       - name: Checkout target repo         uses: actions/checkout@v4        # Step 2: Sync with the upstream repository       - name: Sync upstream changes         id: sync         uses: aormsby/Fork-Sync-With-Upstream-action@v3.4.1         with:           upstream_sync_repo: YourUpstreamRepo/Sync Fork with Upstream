@@ -1,0 +1,36 @@
+name: Sync Fork with Upstream
+
+permissions:
+  contents: write
+
+on:
+  schedule:
+    - cron: "0 4 * * *"  # 每天 4 点（UTC）
+  workflow_dispatch:  # 手动触发
+
+jobs:
+  sync_fork:
+    name: Sync latest commits from upstream repo
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout your forked repository
+      - name: Checkout target repo
+        uses: actions/checkout@v4
+
+      # Step 2: Sync with the upstream repository
+      - name: Sync upstream changes
+        id: sync
+        uses: aormsby/Fork-Sync-With-Upstream-action@v3.4.1
+        with:
+          upstream_sync_repo: YourUpstreamRepo/YourRepository  # 替换为主仓库的路径
+          upstream_sync_branch: main  # 主仓库的 `main` 分支
+          target_sync_branch: main  # 你 Fork 仓库的 `main` 分支
+          target_repo_token: ${{ secrets.GITHUB_TOKEN }}  # 使用 GitHub Token，确保权限
+
+      # Step 3: Verify if sync was successful
+      - name: Sync check
+        if: failure()
+        run: |
+          echo "[Error] Failed to sync with upstream repository. Please check the error message above."
+          exit 1
