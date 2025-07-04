@@ -24,7 +24,7 @@ jobs:
         run: |
           npm install -g vercel  # 安装 Vercel CLI
 
-      # Step 3: Deploy to Vercel
+      # Step 3: Deploy to Vercel (自动确认部署)
       - name: Deploy to Vercel
         run: |
-          vercel --prod  # 部署到 Vercel
+          vercel --prod --yes  # 自动部署并跳过确认
