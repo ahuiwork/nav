@@ -26,10 +26,6 @@ jobs:
         with:
           version: '6'  # 安装 pnpm 6.x
 
-      # 清除现有的 pnpm 缓存，以避免缓存导致的问题
-      - name: Clear pnpm cache
-        run: pnpm store prune
-
       # 安装依赖
       - name: Install dependencies
         run: |
@@ -43,4 +39,4 @@ jobs:
       # 部署到 Vercel
       - name: Deploy to Vercel
         run: |
-          vercel --prod  # 执行部署命令，确保已正确配置 Vercel CLI
+          vercel --prod --token ${{ secrets.VERCEL_TOKEN }}  # 自动部署到 Vercel
