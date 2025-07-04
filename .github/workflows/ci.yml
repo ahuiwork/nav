@@ -1,4 +1,4 @@
-name: Build web
+name: Build web NONONO
 on:
   push:
     branches:
