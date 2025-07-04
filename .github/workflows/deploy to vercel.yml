@@ -19,7 +19,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Step 2: Deploy to Vercel (自动部署，无需 API Token)
+      # Step 2: Install Vercel CLI
+      - name: Install Vercel CLI
+        run: |
+          npm install -g vercel  # 安装 Vercel CLI
+
+      # Step 3: Deploy to Vercel
       - name: Deploy to Vercel
         run: |
           vercel --prod  # 部署到 Vercel
