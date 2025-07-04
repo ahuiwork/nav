@@ -19,7 +19,7 @@ jobs:
 
       - name: Add upstream remote
         run: |
-          git remote add upstream https://github.com/原始项目拥有者/原始项目.git  # 填写原始项目的 URL
+          git remote add upstream https://github.com/xjh22222228/nav.git  # 填写原始项目的 URL
 
       - name: Fetch upstream changes
         run: |
